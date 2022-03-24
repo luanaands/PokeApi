@@ -6,9 +6,17 @@ using PokePoke.Business.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<PokeSettings>(new PokeSettings() { ConnectionString= "server=sql10.freesqldatabase.com;user=sql10481178;password=6CfKYRqhVE;database=sql10481178", ToClose= 1 });
+builder.Services.AddSingleton<PokeSettings>(new PokeSettings() { ConnectionString= "server=sql10.freesqldatabase.com;user=sql10481178;password=6CfKYRqhVE;database=sql10481178;MultipleActiveResultSets=True;", ToClose= 1 });
 Ioc.RegisterServices(builder.Services);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+             builder.SetIsOriginAllowed(origin => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+        });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -23,6 +31,8 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "PokePoke API v1");
 });
+
+app.UseCors();
 
 app.MapPost("/change", async (List<CollectionDTO> coll, IPokemonUseCase pokemonUseCase) => {
 

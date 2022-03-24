@@ -16,14 +16,14 @@ namespace PokePoke.Data
             this.mySqlConnection = new MySqlConnection(_pokeSettings.ConnectionString);
         }
 
-        public MySqlConnection GetConnection()
+        public async Task<MySqlConnection> GetConnection()
         {
             try
             {
                 if (this.mySqlConnection.State == System.Data.ConnectionState.Closed
               || this.mySqlConnection.State == System.Data.ConnectionState.Broken)
                 {
-                     this.mySqlConnection.Open();
+                     await this.mySqlConnection.OpenAsync();
                 }
                 return this.mySqlConnection;
             }

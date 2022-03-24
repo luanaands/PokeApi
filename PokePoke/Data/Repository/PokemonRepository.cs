@@ -16,9 +16,9 @@ namespace PokePoke.Data.Repository
    
         public async Task<bool> UpdatePokemons(int userIdFirst, int userIdSecond, List<int> pokemonIdFirst, List<int> pokemonIdSecond)
         {
-            var bd =  context.GetConnection();
+            var bd =  await context.GetConnection();
 
-            using(var tran = bd.BeginTransaction())
+            using(var tran =  bd.BeginTransaction())
             {
                 try
                 {
@@ -71,7 +71,7 @@ namespace PokePoke.Data.Repository
 
         public async Task<IEnumerable<User>> GetUserAll()
         {
-            var bd =  context.GetConnection();
+            var bd = await context.GetConnection();
           
             var query = $"select u.Id , u.Name from User as u";
 
@@ -81,7 +81,7 @@ namespace PokePoke.Data.Repository
 
         public async Task<IEnumerable<CollectionDTO>> GetCollectionByUserId(int userId)
         {
-            var bd = context.GetConnection();
+            var bd = await context.GetConnection();
             var parans = new
             {
                 userId 
