@@ -46,7 +46,7 @@ app.MapPost("/change", async (List<CollectionDTO> coll, IPokemonUseCase pokemonU
 });
 
 
-app.MapPost("/users", async (IPokemonRepository pokemonUseCase) => {
+app.MapGet("/users", async (IPokemonRepository pokemonUseCase) => {
 
     try
     {
@@ -62,7 +62,7 @@ app.MapPost("/users", async (IPokemonRepository pokemonUseCase) => {
 
 });
 
-app.MapPost("/pokemons/{userId}", async (int userId, IPokemonRepository pokemonUseCase) => {
+app.MapGet("/pokemons/{userId}", async (int userId, IPokemonRepository pokemonUseCase) => {
 
     try
     {
