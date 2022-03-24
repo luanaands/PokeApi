@@ -18,10 +18,10 @@ namespace PokePokeTest
             //Arrange 
             Moq.Mock<IPokemonAPI> mock = new Moq.Mock<IPokemonAPI>();
             Moq.Mock<IPokemonRepository> mock2 = new Moq.Mock<IPokemonRepository>();
-            var someOptions = Options.Create(new PokeSettings { ToClose = 1, ConnectionString=""});
+            var someOptions= new PokeSettings() { ToClose = 20, ConnectionString=""};
             PokemonResponse pokemonResponse = new PokemonResponse { Name = "Venusaur", BaseExperience = 3 };
-            List<string> junior = new List<string> { "Venusaur", "Charmander", "Charmeleon" };
-            List<string> otavio = new List<string> { "Charizard", "Squirtle", "Wartortle" };
+            List<string> junior = new List<string> {  "Charmander", "Charmeleon" };
+            List<string> otavio = new List<string> {  "Squirtle", "Wartortle" };
             mock.Setup(x => x.GetPokemon(It.IsAny<string>())).Returns(Task.FromResult(pokemonResponse));
            
             //Atc
