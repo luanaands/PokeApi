@@ -1,7 +1,0 @@
-C:\Users\luana\source\repos\PokePoke\PokePoke\obj\Debug\net5.0\PokePoke.csproj.AssemblyReference.cache
-C:\Users\luana\source\repos\PokePoke\PokePoke\obj\Debug\net5.0\PokePoke.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\luana\source\repos\PokePoke\PokePoke\obj\Debug\net5.0\PokePoke.AssemblyInfoInputs.cache
-C:\Users\luana\source\repos\PokePoke\PokePoke\obj\Debug\net5.0\PokePoke.AssemblyInfo.cs
-C:\Users\luana\source\repos\PokePoke\PokePoke\obj\Debug\net5.0\PokePoke.csproj.CoreCompileInputs.cache
-C:\Users\luana\source\repos\PokePoke\PokePoke\obj\Debug\net5.0\PokePoke.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\luana\source\repos\PokePoke\PokePoke\obj\Debug\net5.0\PokePoke.MvcApplicationPartsAssemblyInfo.cache
