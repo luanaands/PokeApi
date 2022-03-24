@@ -1,15 +1,18 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Options;
+using MySql.Data.MySqlClient;
 using PokePoke.Business.DTO;
 using PokePoke.Business.Interfaces;
 using PokePoke.Business.Models;
+using PokePoke.Business.Settings;
 
 namespace PokePoke.Data.Repository
 {
     public class PokemonRepository : IPokemonRepository
     {
-        private PokeContext context;
-
-        public PokemonRepository(PokeContext context)
+        private readonly PokeContext context;
+        public readonly IConfiguration config;
+        public PokemonRepository(PokeContext context, PokeSettings pokeSettings)
         {
             this.context = context;
         }
@@ -36,7 +39,7 @@ namespace PokePoke.Data.Repository
                         var query = $"Update Collection set UserId = @UserId where UserId = @userIdOld and pokemonId = @pokemonId";
 
                         var result = await bd.ExecuteAsync(query, parans);
-                        results = results + result;
+                        //results = results + result;
                     }
 
                     foreach (var pokemon in pokemonIdSecond)
@@ -50,16 +53,17 @@ namespace PokePoke.Data.Repository
 
                         var query = $"Update Collection set UserId = @UserId where UserId = @userIdOld and pokemonId = @pokemonId";
                         var result = await bd.ExecuteAsync(query, parans);
-                        results2 = results2 + result;
+                        //results2 = results2 + result;
                     }
-                   
-                   if ( results ==  pokemonIdFirst.Count() && results2 == pokemonIdSecond.Count()) {
-                        tran.Commit();
-                        return true;
-                    }else {
-                        tran.Rollback();
-                        return false;
-                    }
+                    tran.Commit();
+                    return true;
+                   //if ( results ==  pokemonIdFirst.Count() && results2 == pokemonIdSecond.Count()) {
+                   //     tran.Commit();
+                   //     return true;
+                   // }else {
+                   //     tran.Rollback();
+                   //     return false;
+                   // }
                 }
                 catch (Exception ex)
                 {
@@ -81,19 +85,26 @@ namespace PokePoke.Data.Repository
 
         public async Task<IEnumerable<CollectionDTO>> GetCollectionByUserId(int userId)
         {
-            var bd = await context.GetConnection();
-            var parans = new
+           // string connString = config.GetConnectionString("Context");
+            using(var bd = new MySqlConnection("server=sql10.freesqldatabase.com;user=sql10481178;password=6CfKYRqhVE;database=sql10481178;"))
             {
-                userId 
-            };
+                await bd.OpenAsync();
 
-            var query = $"select c.Id, c.UserId, c.PokemonId, p.Name, p.url from Collection as c" +
-                $" inner join Pokemon as p on c.PokemonId = p.Id " +
-                $"inner join User as u on u.Id = c.UserId " +
-                $"where c.UserId = @userId";
+                var parans = new
+                {
+                    userId
+                };
 
-            var result = await bd.QueryAsync<CollectionDTO>(query, parans);
-            return result;
+                var query = $"SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;" +
+                $"select c.Id, c.UserId, c.PokemonId, p.Name, p.url from Collection as c" +
+                    $" inner join Pokemon as p on c.PokemonId = p.Id " +
+                    $"inner join User as u on u.Id = c.UserId " +
+                    $"where c.UserId = @userId;" +
+                    $"SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ ;";
+
+                var result = await bd.QueryAsync<CollectionDTO>(query, parans);
+                return result;
+            }
         }
     }
 }
